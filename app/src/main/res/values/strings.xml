@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyNYCEvents</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+    
+    <!--preference stuff -->
+    <string name="pref_event_label" translatable="false">Event</string>
+    <string name="pref_event_key" translatable="false">event</string>
+
+    <string name="pref_event_jazz" translatable="false">Jazz</string>
+    <string name="pref_event_dance" translatable="false">Dance</string>
+    <string name="pref_event_children_value" translatable="false">forChildren</string>
+    <string name="pref_event_children_option" translatable="false">For Children</string>
+
+
+    <array name="pref_event_values">
+        <item>@string/pref_event_jazz</item>
+        <item>@string/pref_event_dance</item>
+        <item>@string/pref_event_children_value</item>
+    </array>
+    <array name="pref_event_options">
+        <item>@string/pref_event_jazz</item>
+        <item>@string/pref_event_dance</item>
+        <item>@string/pref_event_children_option</item>
+    </array>
+
+
+</resources>
