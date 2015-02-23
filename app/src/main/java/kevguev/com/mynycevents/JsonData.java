@@ -21,7 +21,7 @@ public class JsonData {
     private static final String PRICE= "price";
 
     private String jsonString;
-    JSONObject jsonObject;
+    private JSONObject jsonObject;
     private JSONArray jsonArray;
 
     public JsonData(String jsonString) throws JSONException{
@@ -34,12 +34,22 @@ public class JsonData {
 
     public String[] getArrayListTitles() throws JSONException {
 
-        String[] res = new String[jsonArray.length()];
-        for(int i = 0; i < jsonArray.length(); i++){
+        String[] titles = new String[jsonArray.length()];
 
-            JSONObject result = jsonArray.getJSONObject(i);
-            res[i] =  result.getString(EVENT_NAME)+ "\n" ;
+        for(int i = 0; i < jsonArray.length(); i++){
+            JSONObject eventName = jsonArray.getJSONObject(i);
+            titles[i] =  eventName.getString(EVENT_NAME) + "\n" ;
         }
-        return res;
+        return titles;
+    }
+
+    public String[] getVenueNames() throws JSONException{
+        String[] venNames = new String[jsonArray.length()];
+
+        for(int i = 0; i < jsonArray.length(); i++) {
+            JSONObject venueName = jsonArray.getJSONObject(i);
+            venNames[i] = venueName.getString(VENUE_NAME);
+        }
+        return venNames;
     }
 }

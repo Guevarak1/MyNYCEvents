@@ -4,11 +4,9 @@ package kevguev.com.mynycevents;
  * Created by Kevin Guevara on 12/25/2014.    Christmas
  */
 
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +34,7 @@ import java.util.ArrayList;
 public class BackgroundFragment extends Fragment {
 
     private ArrayAdapter<String> listAdapter;
+    private String[] eventNames;
 
     public BackgroundFragment() {
     }
@@ -54,7 +53,7 @@ public class BackgroundFragment extends Fragment {
 
     public void fetchEvents() {
         FetchEventTask task = new FetchEventTask();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+       // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         //String eventType = prefs.getString(getString(R.string.pref_event_key), "Jazz");
         task.execute("Jazz");
     }
@@ -73,6 +72,7 @@ public class BackgroundFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity(),"test", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),eventNames[position],Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -84,6 +84,7 @@ public class BackgroundFragment extends Fragment {
         @Override
         protected JsonData doInBackground(String... params) {
 
+            final String LOG_TAG = FetchEventTask.class.getSimpleName();
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -107,7 +108,7 @@ public class BackgroundFragment extends Fragment {
 
                 URL url = new URL(builtUri.toString());
 
-                Log.v("Log: ", builtUri.toString());
+                Log.v(LOG_TAG, builtUri.toString());
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -149,6 +150,7 @@ public class BackgroundFragment extends Fragment {
             }
 
             try {
+                Log.v(LOG_TAG,eventsJsonStr);
                 return new JsonData(eventsJsonStr);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -160,6 +162,7 @@ public class BackgroundFragment extends Fragment {
         protected void onPostExecute(JsonData mJsonData) {
             try {
                 String[] eventTitles = mJsonData.getArrayListTitles();
+                eventNames = mJsonData.getVenueNames();
                 if (eventTitles != null) {
                     listAdapter.clear();
                     for (String eventString : eventTitles) {
