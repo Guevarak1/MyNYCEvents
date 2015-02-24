@@ -4,7 +4,7 @@ package kevguev.com.mynycevents;
  * Created by Kevin Guevara on 12/25/2014.    Christmas
  */
 
-import android.net.Uri;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -34,7 +33,9 @@ import java.util.ArrayList;
 public class BackgroundFragment extends Fragment {
 
     private ArrayAdapter<String> listAdapter;
-    private String[] eventNames;
+    private String[] venueName;
+    private String[] neighborhoodNames;
+    private String[] webDescNames;
 
     public BackgroundFragment() {
     }
@@ -71,14 +72,24 @@ public class BackgroundFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(),"test", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(),eventNames[position],Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(getActivity(), venueName[position],Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), neighborhoodNames[position],Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), webDescNames[position],Toast.LENGTH_SHORT).show();*/
+
+                Intent myIntent = new Intent(getActivity(), DetailActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString("venueName", venueName[position]); //Optional parameters
+                extras.putString("neighborhoodName", neighborhoodNames[position]);
+                extras.putString("webDescription", webDescNames[position]);
+                myIntent.putExtras(extras);
+                startActivity(myIntent);
             }
         });
 
         return rootView;
     }
 
+    //fetch nyt api json data, then pass it to the parser
     public class FetchEventTask extends AsyncTask<String, Void, JsonData> {
 
         @Override
@@ -96,10 +107,14 @@ public class BackgroundFragment extends Fragment {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are avaiable at OWM's forecast API page, at
 
-                final String API_KEY = "e391e5ad15f7cc4fd33f9213fc706a2d:5:70566826";
-                final String BASE_URL = "http://api.nytimes.com/svc/events/v2/";
 
-                Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+                final String BASE_URL = "http://api.nytimes.com/svc/events/v2/";
+                final String API_INNER = "listings.json?&filters=category:Jazz,borough:Manhattan&api-key=";
+                final String API_KEY = "e391e5ad15f7cc4fd33f9213fc706a2d:5:70566826";
+
+                String LINK = BASE_URL+API_INNER+API_KEY;
+
+                /*Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                         .appendPath("listings.json")
                         .appendQueryParameter("filters", "category:" + params[0])
                         .appendQueryParameter("borough", "Manhattan")
@@ -107,8 +122,14 @@ public class BackgroundFragment extends Fragment {
                         .build();
 
                 URL url = new URL(builtUri.toString());
-
                 Log.v(LOG_TAG, builtUri.toString());
+
+                */
+
+                Log.v(LOG_TAG,LINK);
+                URL url = new URL(LINK);
+
+
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -159,10 +180,12 @@ public class BackgroundFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(JsonData mJsonData) {
+        protected void onPostExecute(JsonData jsonData) {
             try {
-                String[] eventTitles = mJsonData.getArrayListTitles();
-                eventNames = mJsonData.getVenueNames();
+                String[] eventTitles = jsonData.getArrayListTitles();
+                venueName = jsonData.getVenueNames();
+                neighborhoodNames = jsonData.getNeighborhoodNames();
+                webDescNames = jsonData.getWebDescriptionNames();
                 if (eventTitles != null) {
                     listAdapter.clear();
                     for (String eventString : eventTitles) {

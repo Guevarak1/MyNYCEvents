@@ -52,4 +52,24 @@ public class JsonData {
         }
         return venNames;
     }
+
+    public String[] getNeighborhoodNames() throws JSONException{
+        String[] neighNames = new String[jsonArray.length()];
+
+        for(int i = 0; i < jsonArray.length(); i++) {
+            JSONObject venueName = jsonArray.getJSONObject(i);
+            neighNames[i] = venueName.getString(NEIGHBORHOOD);
+        }
+        return neighNames;
+    }
+
+    public String[] getWebDescriptionNames() throws JSONException{
+        String[] webNames = new String[jsonArray.length()];
+
+        for(int i = 0; i < jsonArray.length(); i++) {
+            JSONObject venueName = jsonArray.getJSONObject(i);
+            webNames[i] = venueName.getString(WEB_DESC);
+        }
+        return webNames;
+    }
 }
