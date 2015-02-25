@@ -109,7 +109,7 @@ public class BackgroundFragment extends Fragment {
 
 
                 final String BASE_URL = "http://api.nytimes.com/svc/events/v2/";
-                final String API_INNER = "listings.json?&filters=category:Jazz,borough:Manhattan&api-key=";
+                final String API_INNER = "listings.json?&filters=category:Dance,borough:Manhattan&api-key=";
                 final String API_KEY = "e391e5ad15f7cc4fd33f9213fc706a2d:5:70566826";
 
                 String LINK = BASE_URL+API_INNER+API_KEY;

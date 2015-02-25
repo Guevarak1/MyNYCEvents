@@ -68,7 +68,10 @@ public class JsonData {
 
         for(int i = 0; i < jsonArray.length(); i++) {
             JSONObject venueName = jsonArray.getJSONObject(i);
-            webNames[i] = venueName.getString(WEB_DESC);
+            webNames[i] = venueName.getString(WEB_DESC).replace("<p>","").replace("</p>","")
+                    .replace("&#8220;","\"").replace("&#8221;","\"").replace("&#8217;","'")
+                    .replace("&#8212;","-").replace("&#161;","i").replace("&#160;"," ")
+                    .replace("&#243;","o");
         }
         return webNames;
     }
