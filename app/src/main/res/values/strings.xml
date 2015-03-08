@@ -11,6 +11,8 @@
     <string name="pref_event_key" translatable="false">event</string>
     <string name="pref_event_jazz" translatable="false">Jazz</string>
     <string name="pref_event_dance" translatable="false">Dance</string>
+    <string name="pref_event_theater" translatable="false">Theater</string>
+
     <string name="pref_event_children_value" translatable="false">forChildren</string>
     <string name="pref_event_children_option" translatable="false">For Children</string>
 
@@ -18,11 +20,13 @@
         <item>@string/pref_event_jazz</item>
         <item>@string/pref_event_dance</item>
         <item>@string/pref_event_children_value</item>
+        <item>@string/pref_event_theater</item>
     </array>
     <array name="pref_event_options">
         <item>@string/pref_event_jazz</item>
         <item>@string/pref_event_dance</item>
         <item>@string/pref_event_children_option</item>
+        <item>@string/pref_event_theater</item>
     </array>
 
     <string name="title_activity_detail">DetailActivity</string>

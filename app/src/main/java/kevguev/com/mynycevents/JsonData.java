@@ -34,13 +34,35 @@ public class JsonData {
 
     public String[] getArrayListTitles() throws JSONException {
 
-        String[] titles = new String[jsonArray.length()];
+        String[] events = new String[jsonArray.length()];
 
         for(int i = 0; i < jsonArray.length(); i++){
             JSONObject eventName = jsonArray.getJSONObject(i);
-            titles[i] =  eventName.getString(EVENT_NAME) + "\n" ;
+            events[i] =  eventName.getString(EVENT_NAME) + "\n" ;
         }
-        return titles;
+        return events;
+    }
+
+    public String[] getDateDesc() throws JSONException {
+
+        String[] events = new String[jsonArray.length()];
+
+        for(int i = 0; i < jsonArray.length(); i++){
+            JSONObject eventName = jsonArray.getJSONObject(i);
+            events[i] =  eventName.getString(DATE_TIME);
+        }
+        return events;
+    }
+
+    public String[] getEventUrls() throws JSONException {
+
+        String[] urls = new String[jsonArray.length()];
+
+        for(int i = 0; i < jsonArray.length(); i++){
+            JSONObject urlName = jsonArray.getJSONObject(i);
+            urls[i] =  urlName.getString(EVENT_URL);
+        }
+        return urls;
     }
 
     public String[] getVenueNames() throws JSONException{

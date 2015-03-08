@@ -5,8 +5,10 @@ package kevguev.com.mynycevents;
  */
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +38,8 @@ public class BackgroundFragment extends Fragment {
     private String[] venueName;
     private String[] neighborhoodNames;
     private String[] webDescNames;
+    private String[] eventUrls;
+    private String[] dates;
 
     public BackgroundFragment() {
     }
@@ -49,14 +53,15 @@ public class BackgroundFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        fetchEvents();
+        updateEvents();
     }
 
-    public void fetchEvents() {
+    public void updateEvents() {
         FetchEventTask task = new FetchEventTask();
-       // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        //String eventType = prefs.getString(getString(R.string.pref_event_key), "Jazz");
-        task.execute("Jazz");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String eventType = prefs.getString(getString(R.string.pref_event_key), getString(R.string.pref_event_jazz));
+        //Jazz Dance Theater forChildren
+        task.execute(eventType);
     }
 
     @Override
@@ -81,6 +86,8 @@ public class BackgroundFragment extends Fragment {
                 extras.putString("venueName", venueName[position]); //Optional parameters
                 extras.putString("neighborhoodName", neighborhoodNames[position]);
                 extras.putString("webDescription", webDescNames[position]);
+                extras.putString("eventUrl" , eventUrls[position]);
+                extras.putString("dates", dates[position]);
                 myIntent.putExtras(extras);
                 startActivity(myIntent);
             }
@@ -104,31 +111,27 @@ public class BackgroundFragment extends Fragment {
             String eventsJsonStr = null;
 
             try {
-                // Construct the URL for the OpenWeatherMap query
-                // Possible parameters are avaiable at OWM's forecast API page, at
-
 
                 final String BASE_URL = "http://api.nytimes.com/svc/events/v2/";
-                final String API_INNER = "listings.json?&filters=category:Dance,borough:Manhattan&api-key=";
+                final String API_INNER = "listings.json?&filters=category:"+params[0]+",borough:Manhattan&api-key=";
                 final String API_KEY = "e391e5ad15f7cc4fd33f9213fc706a2d:5:70566826";
 
                 String LINK = BASE_URL+API_INNER+API_KEY;
 
-                /*Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+
+                /*final String BASE_URL = "http://api.nytimes.com/svc/events/v2/";
+                final String API_KEY = "e391e5ad15f7cc4fd33f9213fc706a2d:5:70566826";
+
+                Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                         .appendPath("listings.json")
                         .appendQueryParameter("filters", "category:" + params[0])
                         .appendQueryParameter("borough", "Manhattan")
                         .appendQueryParameter("api-key", API_KEY)
                         .build();
 
-                URL url = new URL(builtUri.toString());
-                Log.v(LOG_TAG, builtUri.toString());
-
-                */
-
-                Log.v(LOG_TAG,LINK);
+                URL url = new URL(builtUri.toString());*/
                 URL url = new URL(LINK);
-
+                Log.v(LOG_TAG, url.toString());
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -186,6 +189,8 @@ public class BackgroundFragment extends Fragment {
                 venueName = jsonData.getVenueNames();
                 neighborhoodNames = jsonData.getNeighborhoodNames();
                 webDescNames = jsonData.getWebDescriptionNames();
+                eventUrls = jsonData.getEventUrls();
+                dates = jsonData.getDateDesc();
                 if (eventTitles != null) {
                     listAdapter.clear();
                     for (String eventString : eventTitles) {
