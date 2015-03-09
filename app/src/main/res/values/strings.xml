@@ -4,29 +4,54 @@
     <string name="app_name">MyNYCEvents</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- preference stuff -->
+    <!-- preference stuff event types -->
     <string name="pref_event_label" translatable="false">Event</string>
     <string name="pref_event_key" translatable="false">event</string>
     <string name="pref_event_jazz" translatable="false">Jazz</string>
     <string name="pref_event_dance" translatable="false">Dance</string>
     <string name="pref_event_theater" translatable="false">Theater</string>
+    <string name="pref_event_art" translatable="false">Art</string>
+    <string name="pref_event_movies" translatable="false">Movies</string>
 
     <string name="pref_event_children_value" translatable="false">forChildren</string>
     <string name="pref_event_children_option" translatable="false">For Children</string>
+
+    <!--boroughs-->
+    <string name="pref_borough_label" translatable="false">Borough</string>
+    <string name="pref_borough_key" translatable="false">borough</string>
+    <string name="pref_borough_manhattan" translatable="false">Manhattan</string>
+    <string name="pref_borough_brooklyn" translatable="false">Brooklyn</string>
+    <string name="pref_borough_queens" translatable="false">Queens</string>
 
     <array name="pref_event_values">
         <item>@string/pref_event_jazz</item>
         <item>@string/pref_event_dance</item>
         <item>@string/pref_event_children_value</item>
         <item>@string/pref_event_theater</item>
+        <item>@string/pref_event_art</item>
+        <item>@string/pref_event_movies</item>
     </array>
     <array name="pref_event_options">
         <item>@string/pref_event_jazz</item>
         <item>@string/pref_event_dance</item>
         <item>@string/pref_event_children_option</item>
         <item>@string/pref_event_theater</item>
+        <item>@string/pref_event_art</item>
+        <item>@string/pref_event_movies</item>
+    </array>
+    <array name="pref_borough_values">
+        <item>@string/pref_borough_manhattan</item>
+        <item>@string/pref_borough_brooklyn</item>
+        <item>@string/pref_borough_queens</item>
+
+    </array>
+    <array name="pref_borough_options">
+        <item>@string/pref_borough_manhattan</item>
+        <item>@string/pref_borough_brooklyn</item>
+        <item>@string/pref_borough_queens</item>
     </array>
 
     <string name="title_activity_detail">DetailActivity</string>

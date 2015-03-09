@@ -23,14 +23,20 @@ public class JsonData {
     private String jsonString;
     private JSONObject jsonObject;
     private JSONArray jsonArray;
+    private int numResults;
 
     public JsonData(String jsonString) throws JSONException{
 
         this.jsonString = jsonString;
         jsonObject = new JSONObject(jsonString);
         jsonArray = jsonObject.getJSONArray("results");
+        numResults = jsonObject.getInt("num_results");
 
         }
+
+    public int getNumResults(){
+        return numResults;
+    }
 
     public String[] getArrayListTitles() throws JSONException {
 
@@ -49,7 +55,9 @@ public class JsonData {
 
         for(int i = 0; i < jsonArray.length(); i++){
             JSONObject eventName = jsonArray.getJSONObject(i);
-            events[i] =  eventName.getString(DATE_TIME);
+            if(eventName.has(DATE_TIME)){
+                events[i] = eventName.getString(DATE_TIME);
+            }
         }
         return events;
     }
@@ -69,8 +77,13 @@ public class JsonData {
         String[] venNames = new String[jsonArray.length()];
 
         for(int i = 0; i < jsonArray.length(); i++) {
+
             JSONObject venueName = jsonArray.getJSONObject(i);
-            venNames[i] = venueName.getString(VENUE_NAME);
+
+            //start off from here
+            if(venueName.has(VENUE_NAME)) {
+                venNames[i] = venueName.getString(VENUE_NAME);
+            }
         }
         return venNames;
     }
@@ -79,8 +92,10 @@ public class JsonData {
         String[] neighNames = new String[jsonArray.length()];
 
         for(int i = 0; i < jsonArray.length(); i++) {
-            JSONObject venueName = jsonArray.getJSONObject(i);
-            neighNames[i] = venueName.getString(NEIGHBORHOOD);
+            JSONObject neighObj = jsonArray.getJSONObject(i);
+            if (neighObj.has(NEIGHBORHOOD)) {
+                neighNames[i] = neighObj.getString(NEIGHBORHOOD);
+            }
         }
         return neighNames;
     }

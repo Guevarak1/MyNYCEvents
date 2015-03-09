@@ -12,11 +12,13 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -40,6 +42,7 @@ public class BackgroundFragment extends Fragment {
     private String[] webDescNames;
     private String[] eventUrls;
     private String[] dates;
+    private int numResults;
 
     public BackgroundFragment() {
     }
@@ -50,6 +53,18 @@ public class BackgroundFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    //to do add refresh icon from desktop and test and .xml
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        /*if (id == R.id.action_refresh) {
+            updateEvents();
+            return true;
+        }*/
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -57,11 +72,12 @@ public class BackgroundFragment extends Fragment {
     }
 
     public void updateEvents() {
+        //Jazz Dance Theater forChildren event types
         FetchEventTask task = new FetchEventTask();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String eventType = prefs.getString(getString(R.string.pref_event_key), getString(R.string.pref_event_jazz));
-        //Jazz Dance Theater forChildren
-        task.execute(eventType);
+        String borough = prefs.getString(getString(R.string.pref_borough_key), getString(R.string.pref_borough_manhattan));
+        task.execute(eventType,borough);
     }
 
     @Override
@@ -69,7 +85,7 @@ public class BackgroundFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_back, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.list_view_events);
+        final ListView listView = (ListView) rootView.findViewById(R.id.list_view_events);
         listAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_event,
                 R.id.list_item_event_textview, new ArrayList<String>());
         listView.setAdapter(listAdapter);
@@ -77,9 +93,7 @@ public class BackgroundFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*Toast.makeText(getActivity(), venueName[position],Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(), neighborhoodNames[position],Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(), webDescNames[position],Toast.LENGTH_SHORT).show();*/
+                //Toast.makeText(getActivity(), position, Toast.LENGTH_SHORT).show();
 
                 Intent myIntent = new Intent(getActivity(), DetailActivity.class);
                 Bundle extras = new Bundle();
@@ -113,7 +127,8 @@ public class BackgroundFragment extends Fragment {
             try {
 
                 final String BASE_URL = "http://api.nytimes.com/svc/events/v2/";
-                final String API_INNER = "listings.json?&filters=category:"+params[0]+",borough:Manhattan&api-key=";
+                final String API_INNER = "listings.json?&filters=category:"+params[0]+",borough:"+params[1]+"&api-key=";
+                //final String API_INNER = "listings.json?&filters=category:Art,borough:Manhattan&api-key=";
                 final String API_KEY = "e391e5ad15f7cc4fd33f9213fc706a2d:5:70566826";
 
                 String LINK = BASE_URL+API_INNER+API_KEY;
@@ -191,6 +206,12 @@ public class BackgroundFragment extends Fragment {
                 webDescNames = jsonData.getWebDescriptionNames();
                 eventUrls = jsonData.getEventUrls();
                 dates = jsonData.getDateDesc();
+                numResults = jsonData.getNumResults();
+
+                if(numResults == 0){
+                    Toast.makeText(getActivity(), "no events :(", Toast.LENGTH_SHORT).show();
+                }
+                
                 if (eventTitles != null) {
                     listAdapter.clear();
                     for (String eventString : eventTitles) {

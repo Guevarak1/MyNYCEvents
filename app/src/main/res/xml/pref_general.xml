@@ -9,4 +9,12 @@
         android:entryValues="@array/pref_event_values"
         android:key="@string/pref_event_key"
         android:title="@string/pref_event_label" />
+
+    <ListPreference
+        android:defaultValue="@string/pref_borough_manhattan"
+        android:entries="@array/pref_borough_options"
+        android:entryValues="@array/pref_borough_values"
+        android:key="@string/pref_borough_key"
+        android:title="@string/pref_borough_label"
+        />
 </PreferenceScreen>
