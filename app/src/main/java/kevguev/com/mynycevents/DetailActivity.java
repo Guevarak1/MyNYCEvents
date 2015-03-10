@@ -25,8 +25,11 @@ public class DetailActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+        //actionbar set back key and set event name as title of new activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        setTitle(extras.getString("eventTitle"));
     }
 
 
@@ -71,14 +74,15 @@ public class DetailActivity extends ActionBarActivity {
             Intent intent = getActivity().getIntent();
             Bundle extras = intent.getExtras();
 
-            String eventName = extras.getString("venueName");
+            String venueName = extras.getString("venueName");
             String neighborhoodName = extras.getString("neighborhoodName");
             String webDesc = extras.getString("webDescription");
             String eventUrl = extras.getString("eventUrl");
             String date = extras.getString("dates");
 
+
             ((TextView) rootView.findViewById(R.id.venueNameTv))
-                    .setText(eventName);
+                    .setText(venueName);
             ((TextView) rootView.findViewById(R.id.neighborhoodTv))
                     .setText(neighborhoodName);
             ((TextView) rootView.findViewById(R.id.descriptionTv))

@@ -43,6 +43,7 @@ public class BackgroundFragment extends Fragment {
     private String[] webDescNames;
     private String[] eventUrls;
     private String[] dates;
+    private String[] eventTitles;
     private int numResults;
     private TextView textView;
 
@@ -101,11 +102,13 @@ public class BackgroundFragment extends Fragment {
 
                 Intent myIntent = new Intent(getActivity(), DetailActivity.class);
                 Bundle extras = new Bundle();
+                extras.putString("eventTitle",eventTitles[position]);
                 extras.putString("venueName", venueName[position]); //Optional parameters
                 extras.putString("neighborhoodName", neighborhoodNames[position]);
                 extras.putString("webDescription", webDescNames[position]);
                 extras.putString("eventUrl" , eventUrls[position]);
                 extras.putString("dates", dates[position]);
+
                 myIntent.putExtras(extras);
                 startActivity(myIntent);
             }
@@ -204,7 +207,7 @@ public class BackgroundFragment extends Fragment {
         @Override
         protected void onPostExecute(JsonData jsonData) {
             try {
-                String[] eventTitles = jsonData.getArrayListTitles();
+                eventTitles = jsonData.getArrayListTitles();
                 venueName = jsonData.getVenueNames();
                 neighborhoodNames = jsonData.getNeighborhoodNames();
                 webDescNames = jsonData.getWebDescriptionNames();
