@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -43,6 +44,7 @@ public class BackgroundFragment extends Fragment {
     private String[] eventUrls;
     private String[] dates;
     private int numResults;
+    private TextView textView;
 
     public BackgroundFragment() {
     }
@@ -77,6 +79,8 @@ public class BackgroundFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String eventType = prefs.getString(getString(R.string.pref_event_key), getString(R.string.pref_event_jazz));
         String borough = prefs.getString(getString(R.string.pref_borough_key), getString(R.string.pref_borough_manhattan));
+        //make textview here because its when events are updates and not on onCreateView
+        textView.setText( eventType + " events at " + borough);
         task.execute(eventType,borough);
     }
 
@@ -84,7 +88,7 @@ public class BackgroundFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_back, container, false);
-
+        textView = (TextView) rootView.findViewById(R.id.eventTypeTv);
         final ListView listView = (ListView) rootView.findViewById(R.id.list_view_events);
         listAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_event,
                 R.id.list_item_event_textview, new ArrayList<String>());
@@ -211,7 +215,7 @@ public class BackgroundFragment extends Fragment {
                 if(numResults == 0){
                     Toast.makeText(getActivity(), "no events :(", Toast.LENGTH_SHORT).show();
                 }
-                
+
                 if (eventTitles != null) {
                     listAdapter.clear();
                     for (String eventString : eventTitles) {

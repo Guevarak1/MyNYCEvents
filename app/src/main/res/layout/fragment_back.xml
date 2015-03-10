@@ -5,6 +5,13 @@
     android:orientation="vertical"
     tools:context=".MainActivity$PlaceholderFragment">
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20dp"
+        android:id="@+id/eventTypeTv" />
+
     <ListView
         android:id="@+id/list_view_events"
         android:layout_width="match_parent"
