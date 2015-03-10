@@ -47,14 +47,13 @@ public class DetailActivity extends ActionBarActivity {
         switch (id) {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+                return true; // this worked before without return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-
     }
 
     /**
