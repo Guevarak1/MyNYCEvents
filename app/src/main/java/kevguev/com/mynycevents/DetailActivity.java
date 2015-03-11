@@ -1,6 +1,7 @@
 package kevguev.com.mynycevents;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
@@ -11,7 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class DetailActivity extends ActionBarActivity {
@@ -64,6 +67,12 @@ public class DetailActivity extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+        private TextView venueText;
+        private TextView neighborText;
+        private TextView descriptionText;
+        private TextView dateText;
+        private Button mapButton;
+
         public PlaceholderFragment() {
         }
 
@@ -71,24 +80,44 @@ public class DetailActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            Toast.makeText(getActivity(),"Click Venue",Toast.LENGTH_SHORT).show();
             Intent intent = getActivity().getIntent();
             Bundle extras = intent.getExtras();
 
-            String venueName = extras.getString("venueName");
+            final String venueName = extras.getString("venueName");
             String neighborhoodName = extras.getString("neighborhoodName");
             String webDesc = extras.getString("webDescription");
             String eventUrl = extras.getString("eventUrl");
             String date = extras.getString("dates");
 
 
-            ((TextView) rootView.findViewById(R.id.venueNameTv))
-                    .setText(venueName);
-            ((TextView) rootView.findViewById(R.id.neighborhoodTv))
-                    .setText(neighborhoodName);
-            ((TextView) rootView.findViewById(R.id.descriptionTv))
-                    .setText(webDesc);
-            ((TextView) rootView.findViewById(R.id.dateTv))
-                    .setText(date);
+            venueText = (TextView) rootView.findViewById(R.id.venueNameTv);
+            venueText.setText(venueName);
+            venueText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String uri = "geo:?q="+ venueName;
+                    startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
+                }
+            });
+            /*mapButton= (Button) rootView.findViewById(R.id.button);
+            mapButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String uri = "geo:?q="+ venueName;
+                    startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
+                }
+            });
+            */
+            neighborText=(TextView) rootView.findViewById(R.id.neighborhoodTv);
+            neighborText.setText(neighborhoodName);
+
+            descriptionText = (TextView) rootView.findViewById(R.id.descriptionTv);
+            descriptionText.setText(webDesc);
+
+            dateText = (TextView) rootView.findViewById(R.id.dateTv);
+            dateText.setText(date);
+
             final TextView myClickableUrl = (TextView) rootView.findViewById(R.id.urlTv);
             myClickableUrl.setText(eventUrl);
             Linkify.addLinks(myClickableUrl,Linkify.WEB_URLS);

@@ -4,6 +4,7 @@ package kevguev.com.mynycevents;
  * Created by Kevin Guevara on 12/25/2014.    Christmas
  */
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -12,7 +13,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,10 +32,10 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * Retrieves background information and updates the UI with it.
+ * Retrieves background event information and updates the UI with it.
  * Parent Activity is MainActivity
  */
-public class BackgroundFragment extends Fragment {
+public class EventsFragment extends Fragment {
 
     private ArrayAdapter<String> listAdapter;
     private String[] venueName;
@@ -47,25 +47,13 @@ public class BackgroundFragment extends Fragment {
     private int numResults;
     private TextView textView;
 
-    public BackgroundFragment() {
+    public EventsFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    //to do add refresh icon from desktop and test and .xml
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        /*if (id == R.id.action_refresh) {
-            updateEvents();
-            return true;
-        }*/
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -118,8 +106,9 @@ public class BackgroundFragment extends Fragment {
     }
 
     //fetch nyt api json data, then pass it to the parser
-    public class FetchEventTask extends AsyncTask<String, Void, JsonData> {
+    public class FetchEventTask extends AsyncTask<String,Void,JsonData> {
 
+        private ProgressDialog progressDialog;
         @Override
         protected JsonData doInBackground(String... params) {
 
@@ -140,18 +129,6 @@ public class BackgroundFragment extends Fragment {
 
                 String LINK = BASE_URL+API_INNER+API_KEY;
 
-
-                /*final String BASE_URL = "http://api.nytimes.com/svc/events/v2/";
-                final String API_KEY = "e391e5ad15f7cc4fd33f9213fc706a2d:5:70566826";
-
-                Uri builtUri = Uri.parse(BASE_URL).buildUpon()
-                        .appendPath("listings.json")
-                        .appendQueryParameter("filters", "category:" + params[0])
-                        .appendQueryParameter("borough", "Manhattan")
-                        .appendQueryParameter("api-key", API_KEY)
-                        .build();
-
-                URL url = new URL(builtUri.toString());*/
                 URL url = new URL(LINK);
                 Log.v(LOG_TAG, url.toString());
 
@@ -205,7 +182,16 @@ public class BackgroundFragment extends Fragment {
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Loading");
+            progressDialog.show();
+        }
+
+        @Override
         protected void onPostExecute(JsonData jsonData) {
+            progressDialog.dismiss();
             try {
                 eventTitles = jsonData.getArrayListTitles();
                 venueName = jsonData.getVenueNames();

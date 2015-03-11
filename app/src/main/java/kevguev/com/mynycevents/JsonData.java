@@ -12,13 +12,11 @@ public class JsonData {
     private static final String VENUE_NAME = "venue_name";
     private static final String EVENT_URL = "event_detail_url";
     private static final String DATE_TIME = "date_time_description";
-    private static final String STREET_ADDRESS = "street_address";
     private static final String WEB_DESC = "web_description";
     private static final String EVENT_NAME = "event_name";
-    private static final String BOROUGH = "borough";
     private static final String NEIGHBORHOOD = "neighborhood";
-    private static final String CATEGORY= "category";
     private static final String PRICE= "price";
+
 
     private String jsonString;
     private JSONObject jsonObject;
