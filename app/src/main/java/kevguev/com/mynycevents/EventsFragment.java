@@ -5,8 +5,11 @@ package kevguev.com.mynycevents;
  */
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -62,15 +65,37 @@ public class EventsFragment extends Fragment {
         updateEvents();
     }
 
+    public boolean isConnectedToInternet(){
+        ConnectivityManager connectivity = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null){
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
+        }
+
+        return false;
+    }
+
     public void updateEvents() {
         //Jazz Dance Theater forChildren event types
-        FetchEventTask task = new FetchEventTask();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String eventType = prefs.getString(getString(R.string.pref_event_key), getString(R.string.pref_event_jazz));
-        String borough = prefs.getString(getString(R.string.pref_borough_key), getString(R.string.pref_borough_manhattan));
-        //make textview here because its when events are updates and not on onCreateView
-        textView.setText( eventType + " events at " + borough);
-        task.execute(eventType,borough);
+        if(isConnectedToInternet()) {
+            FetchEventTask task = new FetchEventTask();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String eventType = prefs.getString(getString(R.string.pref_event_key), getString(R.string.pref_event_jazz));
+            String borough = prefs.getString(getString(R.string.pref_borough_key), getString(R.string.pref_borough_manhattan));
+            //make textview here because its when events are updates and not on onCreateView
+            textView.setText(eventType + " events at " + borough);
+            task.execute(eventType, borough);
+        }
+        else{
+            Toast.makeText(getActivity(), "no internet connection", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+
+        }
     }
 
     @Override
@@ -109,6 +134,7 @@ public class EventsFragment extends Fragment {
     public class FetchEventTask extends AsyncTask<String,Void,JsonData> {
 
         private ProgressDialog progressDialog;
+        private JsonData jData;
         @Override
         protected JsonData doInBackground(String... params) {
 
@@ -156,6 +182,7 @@ public class EventsFragment extends Fragment {
                 }
                 eventsJsonStr = buffer.toString();
             } catch (IOException e) {
+                Toast.makeText(getActivity(),"no connection", Toast.LENGTH_SHORT).show();
                 Log.e("DetailFragment", "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in to parsing it.
                 return null;
@@ -174,7 +201,8 @@ public class EventsFragment extends Fragment {
 
             try {
                 Log.v(LOG_TAG,eventsJsonStr);
-                return new JsonData(eventsJsonStr);
+                jData = new JsonData(eventsJsonStr);
+                return jData;
             } catch (JSONException e) {
                 e.printStackTrace();
             }

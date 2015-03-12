@@ -1,6 +1,7 @@
 package kevguev.com.mynycevents;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -93,6 +94,7 @@ public class DetailActivity extends ActionBarActivity {
 
             venueText = (TextView) rootView.findViewById(R.id.venueNameTv);
             venueText.setText(venueName);
+            venueText.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
             venueText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -100,15 +102,7 @@ public class DetailActivity extends ActionBarActivity {
                     startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
                 }
             });
-            /*mapButton= (Button) rootView.findViewById(R.id.button);
-            mapButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String uri = "geo:?q="+ venueName;
-                    startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
-                }
-            });
-            */
+
             neighborText=(TextView) rootView.findViewById(R.id.neighborhoodTv);
             neighborText.setText(neighborhoodName);
 
