@@ -235,13 +235,27 @@ public class EventsFragment extends Fragment {
 
                 if (eventTitles != null) {
                     listAdapter.clear();
-                    for (String eventString : eventTitles) {
-                        listAdapter.add(eventString);
+                    /*for (String eventString : eventTitles) {
+                        listAdapter.add(eventString+ "\n" + dates[i]);
+                    }*/
+                    for(int i = 0; i < eventTitles.length; i++){
+
+                        listAdapter.add(eventTitles[i] + "\n\t\t" + chopDate(dates[i]));
                     }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public String chopDate(String date){
+        if(date.contains(";")){
+            int location = date.indexOf(";");
+            return date.substring(0,location);
+        }
+        else{
+            return date;
         }
     }
 }

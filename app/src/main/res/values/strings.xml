@@ -14,7 +14,6 @@
     <string name="pref_event_dance" translatable="false">Dance</string>
     <string name="pref_event_theater" translatable="false">Theater</string>
     <string name="pref_event_art" translatable="false">Art</string>
-    <string name="pref_event_movies" translatable="false">Movies</string>
 
     <string name="pref_event_children_value" translatable="false">forChildren</string>
     <string name="pref_event_children_option" translatable="false">For Children</string>
@@ -32,7 +31,6 @@
         <item>@string/pref_event_children_value</item>
         <item>@string/pref_event_theater</item>
         <item>@string/pref_event_art</item>
-        <item>@string/pref_event_movies</item>
     </array>
     <array name="pref_event_options">
         <item>@string/pref_event_jazz</item>
@@ -40,7 +38,6 @@
         <item>@string/pref_event_children_option</item>
         <item>@string/pref_event_theater</item>
         <item>@string/pref_event_art</item>
-        <item>@string/pref_event_movies</item>
     </array>
     <array name="pref_borough_values">
         <item>@string/pref_borough_manhattan</item>

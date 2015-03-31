@@ -47,6 +47,7 @@ public class JsonData {
         return events;
     }
 
+    //parse to get first date to put into listview
     public String[] getDateDesc() throws JSONException {
 
         String[] events = new String[jsonArray.length()];

@@ -6,15 +6,27 @@
     tools:context=".MainActivity$PlaceholderFragment">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="test"
+        android:id="@+id/eventTypeTv"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="20dp"
-        android:id="@+id/eventTypeTv" />
+        android:textSize="2dp"
+        android:background="#808080"
+        android:text=""
+        />
 
     <ListView
         android:id="@+id/list_view_events"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="10dp" />
 
 </LinearLayout>
